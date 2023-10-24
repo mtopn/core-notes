@@ -6,9 +6,12 @@
     - [1.2.3. Staging](#123-staging)
   - [1.3. Account](#13-account)
   - [1.4. Policies](#14-policies)
-  - [1.5. Errors](#15-errors)
-    - [1.5.1. Generic Omise Errors](#151-generic-omise-errors)
-  - [1.6. Tips for development (local)](#16-tips-for-development-local)
+  - [1.5. Serializer](#15-serializer)
+    - [1.5.1. Custom serializer](#151-custom-serializer)
+  - [1.6. Registration](#16-registration)
+  - [1.7. Errors](#17-errors)
+    - [1.7.1. Generic Omise Errors](#171-generic-omise-errors)
+  - [1.8. Tips for development (local)](#18-tips-for-development-local)
 - [2. Ruby and Ruby on Rails](#2-ruby-and-ruby-on-rails)
   - [2.1. Ruby](#21-ruby)
     - [2.1.1. Array](#211-array)
@@ -48,6 +51,10 @@
       - [2.2.6.3. Update an entity](#2263-update-an-entity)
       - [2.2.6.4. Model with reference](#2264-model-with-reference)
     - [2.2.7. Concerns](#227-concerns)
+    - [2.2.8. Active Record (ORM)](#228-active-record-orm)
+      - [2.2.8.1. Pluck](#2281-pluck)
+    - [2.2.9. Meta programming](#229-meta-programming)
+      - [2.2.9.1. Instance variable set](#2291-instance-variable-set)
 
 # 1. Omise Core
 
@@ -112,9 +119,71 @@ class SomeController
 end
 ```
 
-## 1.5. Errors
+## 1.5. Serializer
 
-### 1.5.1. Generic Omise Errors
+### 1.5.1. Custom serializer
+
+1. Update `app/routes.rb`
+
+```ruby
+OmiseCore::Application.routes.draw do
+  namespace :api, path: nil, defaults: { format: :json }, constraints: { subdomain: /^api(-\w+)*$/ } do
+    resources :some_entities, only: %i[index show] do
+    end
+  end
+end
+```
+
+2. Assign serializer in controller
+
+```ruby
+class SomeEntityController < API::BaseController
+  def index
+    some_data = SomeEntity.all
+
+    render json: serialize(some_data,
+      as: :some_entity_list_serializer,
+      to: :json,
+      location: api_some_entities_path)
+  end
+end
+```
+
+3. Register new serializer in `config/initializer/api_version.rb`.
+
+```ruby
+# new serializer/service may be register in new version(s) of API
+Omise::API.versions.root "Aegaeon", "2014-07-27" do
+  define :account,            serializer: true, service: true
+  define :charge,             serializer: true, service: true
+end
+```
+
+4. Create new custom serializer
+   1. Named with API versioning (e.g. `Aegaeon`).
+   2. Serializers are inherited from `Omise::API::Serializer` (`lib/omise/api/serializer.rb`).
+   3. `initialize` with `Omise::API::Schema::Helpers.instance_variable_set` (`lib/omise/api/schema.rb`)
+   4. `scoped_list` method is required and has instance variable named by serializer. (e.g. `@some_entity_list`)
+
+```ruby
+class SomeEntityListSerializer < Omise::API::Serializer
+  def scoped_list
+    #dynamic naming from instance_variable_set
+    @some_entity_list
+  end
+end
+```
+
+## 1.6. Registration
+
+1. When a team submits to enable `live` account, it starts a `registration` process.
+2. `sidekiq` must be running to make full process of the `registration` service.
+3. If not, the submitted `registration` may not be listed in `admin` mode of a PSP.
+4. The other workaround is to visit `/admin/ekycs/:registration_uid`. The `registration_uid` can be found in `updated_registrations` table.
+
+## 1.7. Errors
+
+### 1.7.1. Generic Omise Errors
 
 1. `lib/omise/api/errors.rb`
 2. Error details for response [https://docs.opn.ooo/api-errors](https://docs.opn.ooo/api-errors)
@@ -139,7 +208,7 @@ end
 
 ---
 
-## 1.6. Tips for development (local)
+## 1.8. Tips for development (local)
 
 1. When developing locally, we can comment out `config/initializers/postgres_patches.rb` to show exact line of execution from the code in ruby console.
 
@@ -1116,5 +1185,83 @@ end
 
 ### 2.2.7. Concerns
 
-1. A concern is a module that you extract to split the implementation of a class or module in coherent chunks, instead of having one big class body. The API surface is the same one, they just help organize the code
+1. A `concern` is a module that you extract to split the implementation of a class or module in coherent chunks, instead of having one big class body. The API surface is the same one, they just help organize the code
 2. [https://www.akshaykhot.com/how-rails-concerns-work-and-how-to-use-them/](https://www.akshaykhot.com/how-rails-concerns-work-and-how-to-use-them/)
+
+### 2.2.8. Active Record (ORM)
+
+#### 2.2.8.1. Pluck
+
+1. [https://apidock.com/rails/ActiveRecord/Calculations/pluck](https://apidock.com/rails/ActiveRecord/Calculations/pluck)
+2. `Record.pluck` works as a shortcut to load only the selected attributes of the entity.
+3. Pluck returns an Array of attribute values type-casted to match the plucked column names, if they can be deduced.
+4. Plucking an SQL fragment returns String values by default.
+
+```ruby
+# Use pluck
+Person.pluck(:name)
+
+# NOT
+Person.all.map(&:name)
+
+Person.pluck(:name)
+# SELECT people.name FROM people
+# => ['David', 'Jeremy', 'Jose']
+
+Person.pluck(:id, :name)
+# SELECT people.id, people.name FROM people
+# => [[1, 'David'], [2, 'Jeremy'], [3, 'Jose']]
+
+Person.distinct.pluck(:role)
+# SELECT DISTINCT role FROM people
+# => ['admin', 'member', 'guest']
+
+Person.where(age: 21).limit(5).pluck(:id)
+# SELECT people.id FROM people WHERE people.age = 21 LIMIT 5
+# => [2, 3]
+
+Person.pluck('DATEDIFF(updated_at, created_at)')
+# SELECT DATEDIFF(updated_at, created_at) FROM people
+# => ['0', '27761', '173']
+```
+
+### 2.2.9. Meta programming
+
+#### 2.2.9.1. Instance variable set
+
+1. Imagine that you have a class constructor with too many arguments. You want to assign each argument to an instance variable of that class.
+2. Use the `Object#instance_variable_set` method provided by Ruby to initialize instance variables.
+   1. `instance_variable_set` sets the instance variable named by symbol to the given object.
+   2. This may circumvent the encapsulation intended by the author of the class, so it should be used with care.
+   3. The variable does not have to exist prior to this call.
+   4. If the instance variable name is passed as a string, that string is converted to a symbol.
+
+```ruby
+class Person
+  def initialize(name, age, address, data, ...)
+    @name = name
+    @age = age
+    @address = address
+    @data = data
+
+    # remaining assignments
+  end
+end
+
+# refactored using instance_variable_set
+class Person
+  def initialize(assigns)
+    assign(assigns)
+  end
+
+  private
+    def assign(attributes)
+      attributes.each do |key, value|
+        instance_variable_set("@#{key}", value)
+      end
+    end
+end
+
+person = Person.new(name: 'John Doe', age: 31)
+puts person.instance_variable_get("@name")  # John Doe
+```
