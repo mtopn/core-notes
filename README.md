@@ -145,6 +145,10 @@ git cherry-pick A^..B
    1. In regular cases, each user (account) has its own setup for credentials.
    2. In the same MMS hierarchy, master and sub-merchants are using the exact same `user.id` as they are all under the same entity.
    3. Each sub-merchant has unique `account` scope that can be UID for such case.
+5. Related files
+   1. `app/controllers/credentials_controller.rb`
+   2. `app/views/admin/credentials/new.html.rb`
+   3. `app/views/admin/credentials/_form.html.rb`
 
 ## 1.4. Account
 
