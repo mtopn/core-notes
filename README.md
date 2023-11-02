@@ -91,8 +91,9 @@
           - [2.2.9.9.8.2. HAVING conditions](#229982-having-conditions)
         - [2.2.9.9.9. Scopes](#22999-scopes)
       - [2.2.9.10. Pluck](#22910-pluck)
-    - [2.2.10. Meta programming](#2210-meta-programming)
-      - [2.2.10.1. Instance variable set](#22101-instance-variable-set)
+    - [2.2.10. Active Model](#2210-active-model)
+    - [2.2.11. Meta programming](#2211-meta-programming)
+      - [2.2.11.1. Instance variable set](#22111-instance-variable-set)
 
 # 1. Omise Core
 
@@ -2188,9 +2189,17 @@ Person.pluck('DATEDIFF(updated_at, created_at)')
 # => ['0', '27761', '173']
 ```
 
-### 2.2.10. Meta programming
+### 2.2.10. Active Model
 
-#### 2.2.10.1. Instance variable set
+- [https://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/](https://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/)
+
+1. `Active Model` is a library containing various modules used in developing classes that need some features present on `Active Record`.
+2. Active Model allows for Action Pack helpers to interact with plain Ruby objects.
+3. Active Model also helps build custom ORMs for use outside of the Rails framework.
+
+### 2.2.11. Meta programming
+
+#### 2.2.11.1. Instance variable set
 
 1. Imagine that you have a class constructor with too many arguments. You want to assign each argument to an instance variable of that class.
 2. Use the `Object#instance_variable_set` method provided by Ruby to initialize instance variables.
