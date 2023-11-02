@@ -4,17 +4,19 @@
     - [1.2.1. Code linting (rubocup)](#121-code-linting-rubocup)
     - [1.2.2. Production](#122-production)
     - [1.2.3. Staging](#123-staging)
-  - [1.3. Account](#13-account)
-  - [1.4. Policies](#14-policies)
-  - [1.5. Serializer](#15-serializer)
-    - [1.5.1. Custom serializer](#151-custom-serializer)
-  - [1.6. Registration](#16-registration)
-    - [1.6.1. Issues in MMS](#161-issues-in-mms)
-      - [1.6.1.1. N+1 query](#1611-n1-query)
-  - [1.7. Errors](#17-errors)
-    - [1.7.1. Generic Omise Errors](#171-generic-omise-errors)
-  - [1.8. Tips for development (local)](#18-tips-for-development-local)
-  - [1.9. Unit test, integration test, and specs](#19-unit-test-integration-test-and-specs)
+  - [1.3. User](#13-user)
+    - [1.3.1. Merchant ID (MID)](#131-merchant-id-mid)
+  - [1.4. Account](#14-account)
+  - [1.5. Policies](#15-policies)
+  - [1.6. Serializer](#16-serializer)
+    - [1.6.1. Custom serializer](#161-custom-serializer)
+  - [1.7. Registration](#17-registration)
+    - [1.7.1. Issues in MMS](#171-issues-in-mms)
+      - [1.7.1.1. N+1 query](#1711-n1-query)
+  - [1.8. Errors](#18-errors)
+    - [1.8.1. Generic Omise Errors](#181-generic-omise-errors)
+  - [1.9. Tips for development (local)](#19-tips-for-development-local)
+  - [1.10. Unit test, integration test, and specs](#110-unit-test-integration-test-and-specs)
 - [2. Ruby and Ruby on Rails](#2-ruby-and-ruby-on-rails)
   - [2.1. Ruby](#21-ruby)
     - [2.1.1. Array](#211-array)
@@ -132,14 +134,26 @@ git merge -s ours origin/master
 git cherry-pick A^..B
 ```
 
-## 1.3. Account
+## 1.3. User
+
+### 1.3.1. Merchant ID (MID)
+
+1. Merchant ID is an unique identifier to differentiate different merchants to proceed transactions to card issuing backends (e.g. `visa` and `master`).
+2. Each backend accepts strings as UID while some of them accept only integers in string.
+3. In Dashboard V1, `MID` can be set with enabled PSP admin (e.g. Thailand PSP admin) at `user` -> `credentials`.
+4. MID setup by Q4 2023 is auto-populated with `user.id` (db integer index) and the further merchants are using `account.id` because MMS system.
+   1. In regular cases, each user (account) has its own setup for credentials.
+   2. In the same MMS hierarchy, master and sub-merchants are using the exact same `user.id` as they are all under the same entity.
+   3. Each sub-merchant has unique `account` scope that can be UID for such case.
+
+## 1.4. Account
 
 1. An `account` works as a mixin and includes with various properties and entities and defined at `/app/models/account.rb`
 2. `account.closure_node` is related to `sub_merchants`.
 3. The account is given in the authentication layer and assigned as an inherited variable `@account` that can be used in all the child classes.
 4. `app/controllers/concerns/authenticable.rb`
 
-## 1.4. Policies
+## 1.5. Policies
 
 1. A team can invited the other user (account) to join as different role (e.g. `admin` and `technical manager`)
 2. `policies` method can be applied to allow private endpoint to work as the invited team.
@@ -158,9 +172,9 @@ class SomeController
 end
 ```
 
-## 1.5. Serializer
+## 1.6. Serializer
 
-### 1.5.1. Custom serializer
+### 1.6.1. Custom serializer
 
 1. Update `app/routes.rb`
 
@@ -213,7 +227,7 @@ class SomeEntityListSerializer < Omise::API::Serializer
 end
 ```
 
-## 1.6. Registration
+## 1.7. Registration
 
 1. When a team submits to enable `live` account, it starts a `registration` process.
 2. `sidekiq` must be running to make full process of the `registration` service.
@@ -222,15 +236,15 @@ end
 5. A `Team` may have multiple registrations, each of which can be denied or verified.
 6. The relationship is associated in `Team` model and setup with `models/concerns/has_many_registrations.rb`.
 
-### 1.6.1. Issues in MMS
+### 1.7.1. Issues in MMS
 
-#### 1.6.1.1. N+1 query
+#### 1.7.1.1. N+1 query
 
 1. In MMS,
 
-## 1.7. Errors
+## 1.8. Errors
 
-### 1.7.1. Generic Omise Errors
+### 1.8.1. Generic Omise Errors
 
 1. `lib/omise/api/errors.rb`
 2. Error details for response [https://docs.opn.ooo/api-errors](https://docs.opn.ooo/api-errors)
@@ -255,11 +269,11 @@ end
 
 ---
 
-## 1.8. Tips for development (local)
+## 1.9. Tips for development (local)
 
 1. When developing locally, we can comment out `config/initializers/postgres_patches.rb` to show exact line of execution from the code in ruby console.
 
-## 1.9. Unit test, integration test, and specs
+## 1.10. Unit test, integration test, and specs
 
 1. `test/test_helper.rb` provides some useful testing methods.
 2. When setting up `context` for a controller/service instance, we can use `@context = Omise::API::Context.from_account(@account)`.
