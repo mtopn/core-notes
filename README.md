@@ -15,8 +15,14 @@
       - [1.7.1.1. N+1 query](#1711-n1-query)
   - [1.8. Errors](#18-errors)
     - [1.8.1. Generic Omise Errors](#181-generic-omise-errors)
-  - [1.9. Tips for development (local)](#19-tips-for-development-local)
-  - [1.10. Unit test, integration test, and specs](#110-unit-test-integration-test-and-specs)
+  - [1.9. Feature toggle](#19-feature-toggle)
+    - [1.9.1. PSP feature flag](#191-psp-feature-flag)
+  - [1.10. Elastic Search](#110-elastic-search)
+    - [1.10.1. Import records to elasticsearch](#1101-import-records-to-elasticsearch)
+  - [1.11. Tips for development (local)](#111-tips-for-development-local)
+  - [1.12. Unit test, integration test, and specs](#112-unit-test-integration-test-and-specs)
+  - [1.13. Deployment](#113-deployment)
+    - [1.13.1. Staging](#1131-staging)
 - [2. Ruby and Ruby on Rails](#2-ruby-and-ruby-on-rails)
   - [2.1. Ruby](#21-ruby)
     - [2.1.1. Array](#211-array)
@@ -129,6 +135,7 @@ rubocop -a
 # branch from staging
 git checkout -b your-branch-staging
 # get latest header from master branch
+git merge -s ours master
 git merge -s ours origin/master
 # cherry-pick commits from development on master branch
 git cherry-pick A^..B
@@ -271,13 +278,40 @@ end
 }
 ```
 
+## 1.9. Feature toggle
+
+### 1.9.1. PSP feature flag
+
+1. [https://opn-ooo.atlassian.net/wiki/spaces/HVPS/pages/588906884/PSP+Level+Feature+Flags](https://opn-ooo.atlassian.net/wiki/spaces/HVPS/pages/588906884/PSP+Level+Feature+Flags)
+
+## 1.10. Elastic Search
+
+### 1.10.1. Import records to elasticsearch
+
+1. `elasticsearch` can run with `brew services` or `docker` on MacOS machines.
+2. Some controllers and services in `core` uses `Flubber` search is applying `elasticsearch` under the hood.
+3. When main DB (postgres) changes, we may need to run indexer to sync and import the records between 2 databases (`elasticsearch` and `postgres`).
+4. The commands can be found in `lib/tasks/elasticsearch.rake`.
+
+```shell
+# re-index and import records for team
+bin/bundle exec rake environment elasticsearch:import:teams
+```
+
 ---
 
-## 1.9. Tips for development (local)
+## 1.11. Tips for development (local)
 
 1. When developing locally, we can comment out `config/initializers/postgres_patches.rb` to show exact line of execution from the code in ruby console.
+2. Some VS Code extensions are helpful for coding with intellisense and code snippets and redirect in between context and related files.
+   1. Some extensions are invalid for the latest ver. as the project is using older ruby ver.
+   2. To use older ver. of extensions,
+   3. [Rails](https://marketplace.visualstudio.com/items?itemName=bung87.rails)
+   4. [Ruby on Rails](https://marketplace.visualstudio.com/items?itemName=hridoy.rails-snippets)
+   5. [Ruby Solargraph](https://marketplace.visualstudio.com/items?itemName=castwide.solargraph)
+   6. [VSCode Ruby](https://marketplace.visualstudio.com/items?itemName=wingrunr21.vscode-ruby)
 
-## 1.10. Unit test, integration test, and specs
+## 1.12. Unit test, integration test, and specs
 
 1. `test/test_helper.rb` provides some useful testing methods.
 2. When setting up `context` for a controller/service instance, we can use `@context = Omise::API::Context.from_account(@account)`.
@@ -323,6 +357,17 @@ end
      end
    end
    ```
+
+## 1.13. Deployment
+
+### 1.13.1. Staging
+
+1. The current CI pipeline doesn't trigger image build by Q4 2023.
+2. After merge a commit to `staging` branch, the build process needs to be triggered manually.
+3. The current CI pipeline uses [`buildkite`](https://buildkite.com/omise/core).
+
+<img src="./imgs/buildkite_new_build.png">
+<img src="./imgs/buildkite_process_list.png">
 
 # 2. Ruby and Ruby on Rails
 
@@ -598,6 +643,8 @@ end
 #### 2.2.2.1. Fat Model, Skinny Controller
 
 1. It basically means placing most of the business logic, data manipulation, and validations within the models (fat models) while keeping the controllers focused on handling request/response and routing (skinny controllers).
+2. In most cases, variables and logics handling view behavior in controllers can be extracted to `helper` class or `helper_method`.
+3. [`helper_method`](https://apidock.com/rails/ActionController/Helpers/ClassMethods/helper_method) allows views to access and use methods in controller without assigning an instance variable.
 
 #### 2.2.2.2. Eager Loading
 
