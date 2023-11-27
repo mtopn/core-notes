@@ -33,7 +33,9 @@
     - [2.1.3. Ruby core](#213-ruby-core)
     - [2.1.4. Ruby method](#214-ruby-method)
       - [2.1.4.1. Method arguments](#2141-method-arguments)
-    - [2.1.5. Class attribute, property, getter, and setter](#215-class-attribute-property-getter-and-setter)
+    - [2.1.5. Include vs Extend module](#215-include-vs-extend-module)
+    - [2.1.6. Class attribute, property, getter, and setter](#216-class-attribute-property-getter-and-setter)
+    - [2.1.7. Memoization](#217-memoization)
   - [2.2. Ruby on Rails](#22-ruby-on-rails)
     - [2.2.1. Good testing, test suites, and specs](#221-good-testing-test-suites-and-specs)
     - [2.2.2. Best practices](#222-best-practices)
@@ -540,7 +542,49 @@ testing('a', 'b', 'c', 'd', 'e', d: 2, x: 1)
 # {:x=>1}
 ```
 
-### 2.1.5. Class attribute, property, getter, and setter
+### 2.1.5. Include vs Extend module
+
+1. The difference between `include` and `extend` is that
+   1. `include` is for adding methods only to an **instance** of a class and
+   2. `extend` is for adding methods to the **class** but not to its instance.
+2. [https://www.geeksforgeeks.org/include-v-s-extend-in-ruby/](https://www.geeksforgeeks.org/include-v-s-extend-in-ruby/)
+
+```ruby
+# Ruby program of Include and Extend
+
+# Creating a module contains a method
+module Geek
+  def geeks
+    puts 'GeeksforGeeks!'
+  end
+end
+
+class Lord
+
+  # only Lord can access geek methods
+  # with the instance of the class.
+  include Geek
+end
+
+class Star
+
+  # only Lord can access geek methods
+  # with the class definition.
+  extend Geek
+end
+
+# object access
+Lord.new.geeks
+
+# class access
+Star.geeks
+
+# NoMethodError: undefined  method
+# `geeks' for Lord:Class
+Lord.geeks
+```
+
+### 2.1.6. Class attribute, property, getter, and setter
 
 1. Ruby class has `initialize` method to have custom initializing behavior.
 2. To access a property of an object, we need to setup either or both getter and setter for the property.
@@ -625,6 +669,23 @@ class Book
   def initialize(title, author)
     @title = title
     @author = author
+  end
+end
+```
+
+### 2.1.7. Memoization
+
+1. Memoization is part of cache technique to return the same output by the same input.
+2. This can be helpful in an object instance lifecycle that if the same methods/attributes are used for several times, the value can be memoized without re-running the same heavy/expensive calculation.
+
+```ruby
+class Email
+  def all_email_count
+    @emails =|| begin
+      User.all.get_emails
+    end
+
+    @emails.count
   end
 end
 ```
@@ -2301,8 +2362,4 @@ end
 
 person = Person.new(name: 'John Doe', age: 31)
 puts person.instance_variable_get("@name")  # John Doe
-```
-
-```
-
 ```
