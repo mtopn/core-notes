@@ -19,10 +19,11 @@
     - [1.9.1. PSP feature flag](#191-psp-feature-flag)
   - [1.10. Elastic Search](#110-elastic-search)
     - [1.10.1. Import records to elasticsearch](#1101-import-records-to-elasticsearch)
-  - [1.11. Tips for development (local)](#111-tips-for-development-local)
-  - [1.12. Unit test, integration test, and specs](#112-unit-test-integration-test-and-specs)
-  - [1.13. Deployment](#113-deployment)
-    - [1.13.1. Staging](#1131-staging)
+  - [1.11. Controllers](#111-controllers)
+  - [1.12. Tips for development (local)](#112-tips-for-development-local)
+  - [1.13. Unit test, integration test, and specs](#113-unit-test-integration-test-and-specs)
+  - [1.14. Deployment](#114-deployment)
+    - [1.14.1. Staging](#1141-staging)
 - [2. Ruby and Ruby on Rails](#2-ruby-and-ruby-on-rails)
   - [2.1. Ruby](#21-ruby)
     - [2.1.1. Array](#211-array)
@@ -300,9 +301,14 @@ end
 bin/bundle exec rake environment elasticsearch:import:teams
 ```
 
+## 1.11. Controllers
+
+1. `admin` controllers may have `policies` to indicate whether certain route is enabled with specific policy assigned to the user with a `membership`.
+2. It works with `authorized?` method from `lib/omise/policy.rb`.
+
 ---
 
-## 1.11. Tips for development (local)
+## 1.12. Tips for development (local)
 
 1. When developing locally, we can comment out `config/initializers/postgres_patches.rb` to show exact line of execution from the code in ruby console.
 2. Some VS Code extensions are helpful for coding with intellisense and code snippets and redirect in between context and related files.
@@ -313,7 +319,7 @@ bin/bundle exec rake environment elasticsearch:import:teams
    5. [Ruby Solargraph](https://marketplace.visualstudio.com/items?itemName=castwide.solargraph)
    6. [VSCode Ruby](https://marketplace.visualstudio.com/items?itemName=wingrunr21.vscode-ruby)
 
-## 1.12. Unit test, integration test, and specs
+## 1.13. Unit test, integration test, and specs
 
 1. `test/test_helper.rb` provides some useful testing methods.
 2. When setting up `context` for a controller/service instance, we can use `@context = Omise::API::Context.from_account(@account)`.
@@ -360,9 +366,9 @@ bin/bundle exec rake environment elasticsearch:import:teams
    end
    ```
 
-## 1.13. Deployment
+## 1.14. Deployment
 
-### 1.13.1. Staging
+### 1.14.1. Staging
 
 1. The current CI pipeline doesn't trigger image build by Q4 2023.
 2. After merge a commit to `staging` branch, the build process needs to be triggered manually.
