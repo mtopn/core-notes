@@ -24,87 +24,90 @@
   - [1.13. Unit test, integration test, and specs](#113-unit-test-integration-test-and-specs)
   - [1.14. Deployment](#114-deployment)
     - [1.14.1. Staging](#1141-staging)
-- [2. Ruby and Ruby on Rails](#2-ruby-and-ruby-on-rails)
-  - [2.1. Ruby](#21-ruby)
-    - [2.1.1. Array](#211-array)
-    - [2.1.2. Lambda function](#212-lambda-function)
-      - [2.1.2.1. ActiveRecord scopes](#2121-activerecord-scopes)
-      - [2.1.2.2. Lambda vs Proc](#2122-lambda-vs-proc)
-      - [2.1.2.3. Lambda use cases](#2123-lambda-use-cases)
-    - [2.1.3. Ruby core](#213-ruby-core)
-    - [2.1.4. Ruby method](#214-ruby-method)
-      - [2.1.4.1. Method arguments](#2141-method-arguments)
-    - [2.1.5. Include vs Extend module](#215-include-vs-extend-module)
-    - [2.1.6. Class attribute, property, getter, and setter](#216-class-attribute-property-getter-and-setter)
-    - [2.1.7. Memoization](#217-memoization)
-  - [2.2. Ruby on Rails](#22-ruby-on-rails)
-    - [2.2.1. Good testing, test suites, and specs](#221-good-testing-test-suites-and-specs)
-    - [2.2.2. Best practices](#222-best-practices)
-      - [2.2.2.1. Fat Model, Skinny Controller](#2221-fat-model-skinny-controller)
-      - [2.2.2.2. Eager Loading](#2222-eager-loading)
-      - [2.2.2.3. Model vs Database validation](#2223-model-vs-database-validation)
-      - [2.2.2.4. Prevent SQL injection](#2224-prevent-sql-injection)
-      - [2.2.2.5. Enums](#2225-enums)
-      - [2.2.2.6. Use Time.current instead of Time.now](#2226-use-timecurrent-instead-of-timenow)
-      - [2.2.2.7. Concerns, Services and Helpers](#2227-concerns-services-and-helpers)
-        - [2.2.2.7.1. Concerns](#22271-concerns)
-        - [2.2.2.7.2. Services](#22272-services)
-        - [2.2.2.7.3. Helpers](#22273-helpers)
-      - [2.2.2.8. Helpful Gems](#2228-helpful-gems)
-    - [2.2.3. App convention](#223-app-convention)
-      - [2.2.3.1. Auto loading](#2231-auto-loading)
-    - [2.2.4. View](#224-view)
-    - [2.2.5. Router](#225-router)
-    - [2.2.6. Controller](#226-controller)
-      - [2.2.6.1. Conventions](#2261-conventions)
-    - [2.2.7. Model](#227-model)
-      - [2.2.7.1. Database migration](#2271-database-migration)
-      - [2.2.7.2. Create new entity](#2272-create-new-entity)
-        - [2.2.7.2.1. Using a form_builder](#22721-using-a-form_builder)
-        - [2.2.7.2.2. Using strong parameters](#22722-using-strong-parameters)
-        - [2.2.7.2.3. Validations and displaying error message](#22723-validations-and-displaying-error-message)
-      - [2.2.7.3. Update an entity](#2273-update-an-entity)
-      - [2.2.7.4. Model with reference](#2274-model-with-reference)
-    - [2.2.8. Concerns](#228-concerns)
-    - [2.2.9. Active Record (ORM)](#229-active-record-orm)
-      - [2.2.9.1. Convention over configuration](#2291-convention-over-configuration)
-      - [2.2.9.2. Creating Active Record Models](#2292-creating-active-record-models)
-      - [2.2.9.3. Overriding the Naming Convention](#2293-overriding-the-naming-convention)
-      - [2.2.9.4. CRUD: Reading and Writing Data](#2294-crud-reading-and-writing-data)
-        - [2.2.9.4.1. Create data](#22941-create-data)
-        - [2.2.9.4.2. Read data](#22942-read-data)
-        - [2.2.9.4.3. Update data](#22943-update-data)
-        - [2.2.9.4.4. Delete data](#22944-delete-data)
-      - [2.2.9.5. Validations](#2295-validations)
-      - [2.2.9.6. Callbacks](#2296-callbacks)
-      - [2.2.9.7. Migrations](#2297-migrations)
-      - [2.2.9.8. Associations](#2298-associations)
-      - [2.2.9.9. Active Record Query Interface](#2299-active-record-query-interface)
-        - [2.2.9.9.1. Active record code example](#22991-active-record-code-example)
-        - [2.2.9.9.2. Retrieving objects from database](#22992-retrieving-objects-from-database)
-          - [2.2.9.9.2.1. find method](#229921-find-method)
-          - [2.2.9.9.2.2. take method](#229922-take-method)
-          - [2.2.9.9.2.3. first method](#229923-first-method)
-          - [2.2.9.9.2.4. last method](#229924-last-method)
-          - [2.2.9.9.2.5. find_by method](#229925-find_by-method)
-        - [2.2.9.9.3. Retrieving multiple objects in batches](#22993-retrieving-multiple-objects-in-batches)
-          - [2.2.9.9.3.1. find_each method](#229931-find_each-method)
-          - [2.2.9.9.3.2. find_in_batches](#229932-find_in_batches)
-        - [2.2.9.9.4. Query conditions](#22994-query-conditions)
-          - [2.2.9.9.4.1. Pure string conditions](#229941-pure-string-conditions)
-          - [2.2.9.9.4.2. Array conditions](#229942-array-conditions)
-          - [2.2.9.9.4.3. Hash conditions](#229943-hash-conditions)
-        - [2.2.9.9.5. Ordering](#22995-ordering)
-        - [2.2.9.9.6. Selecting specific fields](#22996-selecting-specific-fields)
-        - [2.2.9.9.7. Limit and offset](#22997-limit-and-offset)
-        - [2.2.9.9.8. Grouping](#22998-grouping)
-          - [2.2.9.9.8.1. Total grouped items](#229981-total-grouped-items)
-          - [2.2.9.9.8.2. HAVING conditions](#229982-having-conditions)
-        - [2.2.9.9.9. Scopes](#22999-scopes)
-      - [2.2.9.10. Pluck](#22910-pluck)
-    - [2.2.10. Active Model](#2210-active-model)
-    - [2.2.11. Meta programming](#2211-meta-programming)
-      - [2.2.11.1. Instance variable set](#22111-instance-variable-set)
+- [2. MMS (PAYFAC)](#2-mms-payfac)
+  - [2.1. Prerequisite](#21-prerequisite)
+  - [2.2. Confluence](#22-confluence)
+- [3. Ruby and Ruby on Rails](#3-ruby-and-ruby-on-rails)
+  - [3.1. Ruby](#31-ruby)
+    - [3.1.1. Array](#311-array)
+    - [3.1.2. Lambda function](#312-lambda-function)
+      - [3.1.2.1. ActiveRecord scopes](#3121-activerecord-scopes)
+      - [3.1.2.2. Lambda vs Proc](#3122-lambda-vs-proc)
+      - [3.1.2.3. Lambda use cases](#3123-lambda-use-cases)
+    - [3.1.3. Ruby core](#313-ruby-core)
+    - [3.1.4. Ruby method](#314-ruby-method)
+      - [3.1.4.1. Method arguments](#3141-method-arguments)
+    - [3.1.5. Include vs Extend module](#315-include-vs-extend-module)
+    - [3.1.6. Class attribute, property, getter, and setter](#316-class-attribute-property-getter-and-setter)
+    - [3.1.7. Memoization](#317-memoization)
+  - [3.2. Ruby on Rails](#32-ruby-on-rails)
+    - [3.2.1. Good testing, test suites, and specs](#321-good-testing-test-suites-and-specs)
+    - [3.2.2. Best practices](#322-best-practices)
+      - [3.2.2.1. Fat Model, Skinny Controller](#3221-fat-model-skinny-controller)
+      - [3.2.2.2. Eager Loading](#3222-eager-loading)
+      - [3.2.2.3. Model vs Database validation](#3223-model-vs-database-validation)
+      - [3.2.2.4. Prevent SQL injection](#3224-prevent-sql-injection)
+      - [3.2.2.5. Enums](#3225-enums)
+      - [3.2.2.6. Use Time.current instead of Time.now](#3226-use-timecurrent-instead-of-timenow)
+      - [3.2.2.7. Concerns, Services and Helpers](#3227-concerns-services-and-helpers)
+        - [3.2.2.7.1. Concerns](#32271-concerns)
+        - [3.2.2.7.2. Services](#32272-services)
+        - [3.2.2.7.3. Helpers](#32273-helpers)
+      - [3.2.2.8. Helpful Gems](#3228-helpful-gems)
+    - [3.2.3. App convention](#323-app-convention)
+      - [3.2.3.1. Auto loading](#3231-auto-loading)
+    - [3.2.4. View](#324-view)
+    - [3.2.5. Router](#325-router)
+    - [3.2.6. Controller](#326-controller)
+      - [3.2.6.1. Conventions](#3261-conventions)
+    - [3.2.7. Model](#327-model)
+      - [3.2.7.1. Database migration](#3271-database-migration)
+      - [3.2.7.2. Create new entity](#3272-create-new-entity)
+        - [3.2.7.2.1. Using a form_builder](#32721-using-a-form_builder)
+        - [3.2.7.2.2. Using strong parameters](#32722-using-strong-parameters)
+        - [3.2.7.2.3. Validations and displaying error message](#32723-validations-and-displaying-error-message)
+      - [3.2.7.3. Update an entity](#3273-update-an-entity)
+      - [3.2.7.4. Model with reference](#3274-model-with-reference)
+    - [3.2.8. Concerns](#328-concerns)
+    - [3.2.9. Active Record (ORM)](#329-active-record-orm)
+      - [3.2.9.1. Convention over configuration](#3291-convention-over-configuration)
+      - [3.2.9.2. Creating Active Record Models](#3292-creating-active-record-models)
+      - [3.2.9.3. Overriding the Naming Convention](#3293-overriding-the-naming-convention)
+      - [3.2.9.4. CRUD: Reading and Writing Data](#3294-crud-reading-and-writing-data)
+        - [3.2.9.4.1. Create data](#32941-create-data)
+        - [3.2.9.4.2. Read data](#32942-read-data)
+        - [3.2.9.4.3. Update data](#32943-update-data)
+        - [3.2.9.4.4. Delete data](#32944-delete-data)
+      - [3.2.9.5. Validations](#3295-validations)
+      - [3.2.9.6. Callbacks](#3296-callbacks)
+      - [3.2.9.7. Migrations](#3297-migrations)
+      - [3.2.9.8. Associations](#3298-associations)
+      - [3.2.9.9. Active Record Query Interface](#3299-active-record-query-interface)
+        - [3.2.9.9.1. Active record code example](#32991-active-record-code-example)
+        - [3.2.9.9.2. Retrieving objects from database](#32992-retrieving-objects-from-database)
+          - [3.2.9.9.2.1. find method](#329921-find-method)
+          - [3.2.9.9.2.2. take method](#329922-take-method)
+          - [3.2.9.9.2.3. first method](#329923-first-method)
+          - [3.2.9.9.2.4. last method](#329924-last-method)
+          - [3.2.9.9.2.5. find_by method](#329925-find_by-method)
+        - [3.2.9.9.3. Retrieving multiple objects in batches](#32993-retrieving-multiple-objects-in-batches)
+          - [3.2.9.9.3.1. find_each method](#329931-find_each-method)
+          - [3.2.9.9.3.2. find_in_batches](#329932-find_in_batches)
+        - [3.2.9.9.4. Query conditions](#32994-query-conditions)
+          - [3.2.9.9.4.1. Pure string conditions](#329941-pure-string-conditions)
+          - [3.2.9.9.4.2. Array conditions](#329942-array-conditions)
+          - [3.2.9.9.4.3. Hash conditions](#329943-hash-conditions)
+        - [3.2.9.9.5. Ordering](#32995-ordering)
+        - [3.2.9.9.6. Selecting specific fields](#32996-selecting-specific-fields)
+        - [3.2.9.9.7. Limit and offset](#32997-limit-and-offset)
+        - [3.2.9.9.8. Grouping](#32998-grouping)
+          - [3.2.9.9.8.1. Total grouped items](#329981-total-grouped-items)
+          - [3.2.9.9.8.2. HAVING conditions](#329982-having-conditions)
+        - [3.2.9.9.9. Scopes](#32999-scopes)
+      - [3.2.9.10. Pluck](#32910-pluck)
+    - [3.2.10. Active Model](#3210-active-model)
+    - [3.2.11. Meta programming](#3211-meta-programming)
+      - [3.2.11.1. Instance variable set](#32111-instance-variable-set)
 
 # 1. Omise Core
 
@@ -377,11 +380,28 @@ bin/bundle exec rake environment elasticsearch:import:teams
 <img src="./imgs/buildkite_new_build.png">
 <img src="./imgs/buildkite_process_list.png">
 
-# 2. Ruby and Ruby on Rails
+# 2. MMS (PAYFAC)
 
-## 2.1. Ruby
+## 2.1. Prerequisite
 
-### 2.1.1. Array
+1. A `User` can have an only, single owned `Team`, while can be "**invited**" to work at other `Team` for certain `role` through `Membership` and `TeamMembership` model.
+2. A `Team` have 2 types of accounts
+   1. `test` for testing and staging environment which DOES NOT work with real balance and transaction services. This type of account is set to be created when creating a new `Team`.
+   2. `live` for real and production environment and touches real money. A `live` account must go through `kyc` process by submitting required documents and accepted by system admin.
+3. A `SubMerchant` is a `Team` with `parent_team_id` and can be associated in a tree hierarchy structure through `closure_nodes` and `closure_node_hierarchies`.
+   1. `SubMerchant` is inherited from `Team` and use the same table in DB.
+   2. The only difference between 2 models is that `SubMerchant` must have a `parent_team_id` to belong to, while `Team` does not.
+4. Current hierarchy allows sub-merchants up to `7`-level.
+
+## 2.2. Confluence
+
+[https://opn-ooo.atlassian.net/wiki/spaces/PayFac/pages/857539575/PAYFAC+Documentation](https://opn-ooo.atlassian.net/wiki/spaces/PayFac/pages/857539575/PAYFAC+Documentation)
+
+# 3. Ruby and Ruby on Rails
+
+## 3.1. Ruby
+
+### 3.1.1. Array
 
 1. `<<` can be used to append a single item to an array.
 2. To add multiple items once, we can use `Array#push` method instead.
@@ -406,7 +426,7 @@ array.each { |n| array << n }
 # [1,2,3,4,5,6,7]
 ```
 
-### 2.1.2. Lambda function
+### 3.1.2. Lambda function
 
 1. Lambda function are considered anonymous functions which can be kept in a variable and passed as an argument.
 2. A lambda function must be called with `Lambda#call` method or the other syntax. It doesn't work directly as regular ruby functions.
@@ -461,7 +481,7 @@ my_lambda.call
 # output from function
 ```
 
-#### 2.1.2.1. ActiveRecord scopes
+#### 3.1.2.1. ActiveRecord scopes
 
 1. ActiveRecord scopes, used in Rails applications, are commonplace to see a lambda function.
 2. If the value is not evaluated at run time, when the code executes, the function can go very wrong.
@@ -472,7 +492,7 @@ my_lambda.call
 scope :new_posts, lambda { where("created_at > ?", 1.week.ago) }
 ```
 
-#### 2.1.2.2. Lambda vs Proc
+#### 3.1.2.2. Lambda vs Proc
 
 1. `Lambda`s enforce argument count. A lambda must be called with exactly number of arguments as it declares.
 2. `Procs`, on the other hand, accept any number of arguments. If they are passed too few arguments, the unpassed arguments are set to a value of nil. If they are passed too many arguments, the extraneous arguments are dropped silently.
@@ -481,7 +501,7 @@ scope :new_posts, lambda { where("created_at > ?", 1.week.ago) }
    1. The return statement in a `lambda` function stops the lambda and returns control to the calling code.
    2. The return statement in a `Proc`, in contrast, returns from both the Proc and the calling code.
 
-#### 2.1.2.3. Lambda use cases
+#### 3.1.2.3. Lambda use cases
 
 1. ActiveRecord scopes
    1. As mentioned previously, ActiveRecord scopes are a common use of Ruby lambdas.
@@ -518,15 +538,15 @@ puts my_multiplying_hash_like_object["bye"]
 # byebye
 ```
 
-### 2.1.3. Ruby core
+### 3.1.3. Ruby core
 
 1. `Comparable` module can be included in a class to make its instances comparable.
 
-### 2.1.4. Ruby method
+### 3.1.4. Ruby method
 
 1. `return` keyword can only be used in a ruby method.
 
-#### 2.1.4.1. Method arguments
+#### 3.1.4.1. Method arguments
 
 1. [https://www.rubyguides.com/2018/06/rubys-method-arguments/](https://www.rubyguides.com/2018/06/rubys-method-arguments/)
 2. Function/method arguments can be named and become mandatory and shiftable.
@@ -548,7 +568,7 @@ testing('a', 'b', 'c', 'd', 'e', d: 2, x: 1)
 # {:x=>1}
 ```
 
-### 2.1.5. Include vs Extend module
+### 3.1.5. Include vs Extend module
 
 1. The difference between `include` and `extend` is that
    1. `include` is for adding methods only to an **instance** of a class and
@@ -590,7 +610,7 @@ Star.geeks
 Lord.geeks
 ```
 
-### 2.1.6. Class attribute, property, getter, and setter
+### 3.1.6. Class attribute, property, getter, and setter
 
 1. Ruby class has `initialize` method to have custom initializing behavior.
 2. To access a property of an object, we need to setup either or both getter and setter for the property.
@@ -679,7 +699,7 @@ class Book
 end
 ```
 
-### 2.1.7. Memoization
+### 3.1.7. Memoization
 
 1. Memoization is part of cache technique to return the same output by the same input.
 2. This can be helpful in an object instance lifecycle that if the same methods/attributes are used for several times, the value can be memoized without re-running the same heavy/expensive calculation.
@@ -696,24 +716,24 @@ class Email
 end
 ```
 
-## 2.2. Ruby on Rails
+## 3.2. Ruby on Rails
 
-### 2.2.1. Good testing, test suites, and specs
+### 3.2.1. Good testing, test suites, and specs
 
 1. [https://www.betterspecs.org/](https://www.betterspecs.org/)
 
-### 2.2.2. Best practices
+### 3.2.2. Best practices
 
 1. References
    1. [https://medium.com/@ishtri51/ruby-on-rails-best-practices-d7692f3c6d4d](https://medium.com/@ishtri51/ruby-on-rails-best-practices-d7692f3c6d4d)
 
-#### 2.2.2.1. Fat Model, Skinny Controller
+#### 3.2.2.1. Fat Model, Skinny Controller
 
 1. It basically means placing most of the business logic, data manipulation, and validations within the models (fat models) while keeping the controllers focused on handling request/response and routing (skinny controllers).
 2. In most cases, variables and logics handling view behavior in controllers can be extracted to `helper` class or `helper_method`.
 3. [`helper_method`](https://apidock.com/rails/ActionController/Helpers/ClassMethods/helper_method) allows views to access and use methods in controller without assigning an instance variable.
 
-#### 2.2.2.2. Eager Loading
+#### 3.2.2.2. Eager Loading
 
 1. `N+1` Problem is an infamous problem faced by many ORM using frameworks including rails.
 2. It arises when an application makes `N` additional queries to the database for a collection of records, where `N` is the number of initial records are retrieved.
@@ -722,13 +742,13 @@ end
    1. `includes` performs a left outer join to load the associated data, which can help avoid the `N+1` query problem.
    2. On the other hand, `preload` performs separate queries for each association and then associates the data in memory.
 
-#### 2.2.2.3. Model vs Database validation
+#### 3.2.2.3. Model vs Database validation
 
 1. `ActiveRecord` includes [validation](https://guides.rubyonrails.org/active_record_validations.html) features so data offered to the database can be validated before being accepted and persisted.
 2. Data-related validation (such as field constraints) should be done in the database.
 3. Any validation that is following some business rules (such as email validation) should be done in the model.
 
-#### 2.2.2.4. Prevent SQL injection
+#### 3.2.2.4. Prevent SQL injection
 
 1. SQLi (SQL Injection) is a type of security vulnerability that occurs when an application fails to properly sanitize or validate user-supplied input before incorporating it into SQL queries.
 2. Use dynamic attribute based finder
@@ -741,7 +761,7 @@ User.where("name = '#{params[:name]}'") # SQL Injection!
 User.find_by_name(name) # dynamic finder
 ```
 
-#### 2.2.2.5. Enums
+#### 3.2.2.5. Enums
 
 1. An `enum` in Rails is a data type that represents a set of named values. The values of an `enum` are stored as integers in the database, but they can be accessed by name in Ruby code. This makes it easier to work with `enum`s in your Rails application.
 
@@ -794,7 +814,7 @@ order.status_packed! # update(status: :packed)
 order.status_shipped # User.where(status: :shipped)
 ```
 
-#### 2.2.2.6. Use Time.current instead of Time.now
+#### 3.2.2.6. Use Time.current instead of Time.now
 
 1. keep in mind that `Time.now` returns a Time object representing the current time in the default system time zone. To get the current time in application’s configured time zone you have to use `Time.zone.now`.
 2. Unlike `Time.now`, which uses the default system time zone, `Time.current` takes into account the time zone configured for the Rails application.
@@ -812,9 +832,9 @@ current_time = Time.zone.now # Thu, 13 Jul 2023 08:27:07.607994466 EAT +03:00
 current_time = Time.current # Thu, 13 Jul 2023 08:27:10.015227438 EAT +03:00
 ```
 
-#### 2.2.2.7. Concerns, Services and Helpers
+#### 3.2.2.7. Concerns, Services and Helpers
 
-##### 2.2.2.7.1. Concerns
+##### 3.2.2.7.1. Concerns
 
 1. In Rails, `Concerns` are modules that encapsulate reusable code and behavior that can be included in multiple classes or modules. It extends `ActiveSupport::Concern` module.
 2. They help keep models focused and avoid excessive code duplication. `Concerns` are implemented using Ruby modules and included in classes using the `include` keyword.
@@ -857,7 +877,7 @@ class Album < ApplicationRecord
 end
 ```
 
-##### 2.2.2.7.2. Services
+##### 3.2.2.7.2. Services
 
 1. As your application grows, you may begin to see domain/business logic littered across the models and the controller. Such logics do not belong to either the controller or the model, so they make the code difficult to re-use and maintain.
 2. Service objects are plain old Ruby objects (PORO’s) that do one thing .They encapsulate a set of business logic, moving it out of models and controllers and into a more focused setting.
@@ -900,7 +920,7 @@ class UserController < ApplicationController
 end
 ```
 
-##### 2.2.2.7.3. Helpers
+##### 3.2.2.7.3. Helpers
 
 1. A helper is a method that is used in your Rails **views** to share reusable code. Helper methods are defined within modules called `Helper Module` and are automatically made available to the corresponding views.
 
@@ -918,7 +938,7 @@ end
 <h1><%= full_name(@user) %></h1>
 ```
 
-#### 2.2.2.8. Helpful Gems
+#### 3.2.2.8. Helpful Gems
 
 - `oj`: Library for both parsing and generating JSON with a ton of options.
 - `rack-mini-profiler`: Middleware that provides performance profiling and diagnostics for Rack-based applications.
@@ -933,16 +953,16 @@ end
 - `friendlyId`: Gem for creating human-readable URLs by using slugs for ActiveRecord models.
 - `paperclip`: Gem for handling file attachments in Rails applications.
 
-### 2.2.3. App convention
+### 3.2.3. App convention
 
-#### 2.2.3.1. Auto loading
+#### 3.2.3.1. Auto loading
 
 1. Rails applications do not use require to load application code.
 2. You only need require calls for two use cases:
    1. To load files under the `lib` directory.
    2. To load gem dependencies that have `require: false` in the Gemfile.
 
-### 2.2.4. View
+### 3.2.4. View
 
 1. For UIs built from similar code, we can create `partials` to share these UI components in between views.
 2. `partials` are named with a prefix with underscore `_`.
@@ -982,7 +1002,7 @@ end
 <%= render "form", article: @article %>
 ```
 
-### 2.2.5. Router
+### 3.2.5. Router
 
 1. We can change router default to show content of a specific route.
 
@@ -1053,7 +1073,7 @@ edit_article GET    /articles/:id/edit(.:format) articles#edit
 </ul>
 ```
 
-### 2.2.6. Controller
+### 3.2.6. Controller
 
 1. Generating `controller`
 
@@ -1072,7 +1092,7 @@ create    app/helpers/articles_helper.rb
 invoke    test_unit
 ```
 
-#### 2.2.6.1. Conventions
+#### 3.2.6.1. Conventions
 
 1. When an action (method) of a controller class is empty, rails will automatically render a view that matches the name of the controller.
 2. In the following class, the `index` method will try to render `app/views/articles/index.html.erb` by default.
@@ -1090,7 +1110,7 @@ class ArticlesController < ApplicationController
 end
 ```
 
-### 2.2.7. Model
+### 3.2.7. Model
 
 1. A `model` is a Ruby class that is used to represent data.
 2. Additionally, models can interact with the application's database through a feature of Rails called `Active Record`.
@@ -1108,7 +1128,7 @@ create      test/models/article_test.rb
 create      test/fixtures/articles.yml
 ```
 
-#### 2.2.7.1. Database migration
+#### 3.2.7.1. Database migration
 
 1. Migrations are used to alter the structure of an application's database.
 2. In Rails applications, migrations are written in Ruby so that they can be database-agnostic.
@@ -1133,9 +1153,9 @@ end
 5. We can use some generic model methods such as `Model#find` and `Model#all`.
 6. Note that `Model#all` returns an `ActiveRecord::Relation` object which is an array of entities with some other useful methods.
 
-#### 2.2.7.2. Create new entity
+#### 3.2.7.2. Create new entity
 
-##### 2.2.7.2.1. Using a form_builder
+##### 3.2.7.2.1. Using a form_builder
 
 1. In controller, we may have a `new` and `create` method to create a new entity.
    1. `new` for user to request and fill a form to create an entity.
@@ -1197,7 +1217,7 @@ end
 <% end %>
 ```
 
-##### 2.2.7.2.2. Using strong parameters
+##### 3.2.7.2.2. Using strong parameters
 
 7. Submitted form data is put into the `params` Hash, alongside captured route parameters.
 8. Thus, the create action can access the submitted title via `params[:article][:title]` and the submitted body via `params[:article][:body]`.
@@ -1238,7 +1258,7 @@ class ArticlesController < ApplicationController
 end
 ```
 
-##### 2.2.7.2.3. Validations and displaying error message
+##### 3.2.7.2.3. Validations and displaying error message
 
 1. Besides setting up process for creating an entity on `view` and `controller`, we can set validation process on `model`.
 2. Validations are rules that are checked before a model object is saved.
@@ -1284,7 +1304,7 @@ end
 <% end %>
 ```
 
-#### 2.2.7.3. Update an entity
+#### 3.2.7.3. Update an entity
 
 1. The implementation to edit/update an existing entity is quite similar to create a new one.
 2. From the previous example, we can have 2 more methods `edit` and `update` in `ArticlesController`.
@@ -1335,7 +1355,7 @@ class ArticlesController < ApplicationController
 end
 ```
 
-#### 2.2.7.4. Model with reference
+#### 3.2.7.4. Model with reference
 
 1. After creating `Article` entity, we can have `Comment` which belongs to each article.
 
@@ -1411,14 +1431,14 @@ end
 <% end %>
 ```
 
-### 2.2.8. Concerns
+### 3.2.8. Concerns
 
 1. A `concern` is a module that you extract to split the implementation of a class or module in coherent chunks, instead of having one big class body. The API surface is the same one, they just help organize the code
 2. [https://www.akshaykhot.com/how-rails-concerns-work-and-how-to-use-them/](https://www.akshaykhot.com/how-rails-concerns-work-and-how-to-use-them/)
 
-### 2.2.9. Active Record (ORM)
+### 3.2.9. Active Record (ORM)
 
-#### 2.2.9.1. Convention over configuration
+#### 3.2.9.1. Convention over configuration
 
 1. When using class names composed of two or more words, the model class name should follow the Ruby conventions, using the `CamelCase` form, while the table name must use the `snake_case` form.
    1. Model Class - Singular with the first letter of each word capitalized (e.g., `BookClub`).
@@ -1434,7 +1454,7 @@ end
    5. `(association_name)_type`
    6. `(table_name)_count`
 
-#### 2.2.9.2. Creating Active Record Models
+#### 3.2.9.2. Creating Active Record Models
 
 1. To create Active Record models, subclass `ApplicationRecord`.
 2. This will create a `Product` model, mapped to a `products` table at the database.
@@ -1454,7 +1474,7 @@ end
    );
    ```
 
-#### 2.2.9.3. Overriding the Naming Convention
+#### 3.2.9.3. Overriding the Naming Convention
 
 1. Since `ApplicationRecord` inherits from `ActiveRecord::Base`, your application's models will have a number of helpful methods available to them.
 2. For example, you can use the `ActiveRecord::Base.table_name=` method to customize the table name that should be used.
@@ -1484,9 +1504,9 @@ end
    end
    ```
 
-#### 2.2.9.4. CRUD: Reading and Writing Data
+#### 3.2.9.4. CRUD: Reading and Writing Data
 
-##### 2.2.9.4.1. Create data
+##### 3.2.9.4.1. Create data
 
 1. Active Record objects can be created from a hash, a block, or have their attributes manually set after creation. The `new` method will return a new object while `create` will return the object and save it to the database.
 2. A call to `user.save` will commit the record to the database.
@@ -1508,7 +1528,7 @@ end
    end
    ```
 
-##### 2.2.9.4.2. Read data
+##### 3.2.9.4.2. Read data
 
 1. More in [Active Record Query Interface](#2289-active-record-query-interface)
 
@@ -1526,7 +1546,7 @@ david = User.find_by(name: 'David')
 users = User.where(name: 'David', occupation: 'Code Artist').order(created_at: :desc)
 ```
 
-##### 2.2.9.4.3. Update data
+##### 3.2.9.4.3. Update data
 
 ```ruby
 user = User.find_by(name: 'David')
@@ -1539,7 +1559,7 @@ user.update(name: 'Dave')
 User.update_all max_login_attempts: 3, must_change_password: true
 ```
 
-##### 2.2.9.4.4. Delete data
+##### 3.2.9.4.4. Delete data
 
 ```ruby
 user = User.find_by(name: 'David')
@@ -1552,7 +1572,7 @@ User.destroy_by(name: 'David')
 User.destroy_all
 ```
 
-#### 2.2.9.5. Validations
+#### 3.2.9.5. Validations
 
 1. Methods like `save`, `create` and `update` validate a model before persisting it to the database.
 2. When a model is invalid these methods return `false` and no database operations are performed.
@@ -1569,7 +1589,7 @@ user.save!
 # ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
 ```
 
-#### 2.2.9.6. Callbacks
+#### 3.2.9.6. Callbacks
 
 1. Active Record callbacks allow you to attach code to certain events in the life-cycle of your models.
 2. This enables you to add behavior to your models by transparently executing code when those events occur, like when you create a new record, update it, destroy it, and so on.
@@ -1588,7 +1608,7 @@ end
 # A new user was registered
 ```
 
-#### 2.2.9.7. Migrations
+#### 3.2.9.7. Migrations
 
 1. Rails provides a convenient way to manage changes to a database schema via migrations.
 2. Migrations are written in a domain-specific language and stored in files which are executed against any database that Active Record supports.
@@ -1612,7 +1632,7 @@ class CreatePublications < ActiveRecord::Migration[7.1]
 end
 ```
 
-#### 2.2.9.8. Associations
+#### 3.2.9.8. Associations
 
 1. Active Record associations allow you to define relationships between models. Associations can be used to describe one-to-one, one-to-many, and many-to-many relationships.
 
@@ -1623,11 +1643,11 @@ class Author < ApplicationRecord
 end
 ```
 
-#### 2.2.9.9. Active Record Query Interface
+#### 3.2.9.9. Active Record Query Interface
 
 [https://guides.rubyonrails.org/active_record_querying.html](https://guides.rubyonrails.org/active_record_querying.html)
 
-##### 2.2.9.9.1. Active record code example
+##### 3.2.9.9.1. Active record code example
 
 <img src="imgs/bookstore_models.png">
 
@@ -1676,7 +1696,7 @@ class Supplier < ApplicationRecord
 end
 ```
 
-##### 2.2.9.9.2. Retrieving objects from database
+##### 3.2.9.9.2. Retrieving objects from database
 
 1. Finder methods that return a collection, such as `where` and `group`, return an instance of `ActiveRecord::Relation`. Methods that find a single entity, such as `find` and `first`, return a single instance of the model.
 2. The primary operation of `Model.find(options)` can be summarized as:
@@ -1685,7 +1705,7 @@ end
    3. Instantiate the equivalent Ruby object of the appropriate model for every resulting row.
    4. Run `after_find` and then `after_initialize` callbacks, if any.
 
-###### 2.2.9.9.2.1. find method
+###### 3.2.9.9.2.1. find method
 
 1. Using the `find` method, you can retrieve the object corresponding to the specified primary key that matches any supplied options. Considering the followings are equivalent.
 
@@ -1742,7 +1762,7 @@ end
    SELECT * FROM customers WHERE (store_id = 1 AND id = 8 OR store_id = 7 AND id = 15)
    ```
 
-###### 2.2.9.9.2.2. take method
+###### 3.2.9.9.2.2. take method
 
 1. The `take` method retrieves a record without any implicit ordering.
 2. The `take` method returns `nil` if no record is found and no exception will be raised.
@@ -1765,7 +1785,7 @@ end
 
 5. The `take!` method behaves exactly like take, except that it will raise `ActiveRecord::RecordNotFound` if no matching record is found.
 
-###### 2.2.9.9.2.3. first method
+###### 3.2.9.9.2.3. first method
 
 1. The `first` method finds the first record ordered by primary key (default).
 2. The `first` method returns `nil` if no matching record is found and no exception will be raised.
@@ -1812,11 +1832,11 @@ end
    SELECT * FROM customers ORDER BY customers.first_name ASC LIMIT 1
    ```
 
-###### 2.2.9.9.2.4. last method
+###### 3.2.9.9.2.4. last method
 
 1. Works similar to `first` method but with `DESC` order.
 
-###### 2.2.9.9.2.5. find_by method
+###### 3.2.9.9.2.5. find_by method
 
 1. The `find_by` method finds the first record matching some conditions.
 2. The `find_by!` method behaves exactly like `find_by`, except that it will raise `ActiveRecord::RecordNotFound` if no matching record is found.
@@ -1862,7 +1882,7 @@ end
    #<Customer id: 10, store_id: 5, first_name: "Joe">
    ```
 
-##### 2.2.9.9.3. Retrieving multiple objects in batches
+##### 3.2.9.9.3. Retrieving multiple objects in batches
 
 1. When iterating through a large set of collection, doing a single query to retrieve all data at once could have memory overflow as Active Record needs to
    1. fetch the entire table
@@ -1874,7 +1894,7 @@ end
 3. The `find_each` and `find_in_batches` methods are intended for use in the batch processing of a large number of records that wouldn't fit in memory all at once.
 4. If there's only a few hundreds or a thousand of records, the regular `find` method is a preferred option.
 
-###### 2.2.9.9.3.1. find_each method
+###### 3.2.9.9.3.1. find_each method
 
 1. The `find_each` method retrieves records in batches and then yields each one to the block.
 2. By default, `find_each` retrieves `1000` records to proceed for each batch.
@@ -1935,7 +1955,7 @@ end
       end
       ```
 
-###### 2.2.9.9.3.2. find_in_batches
+###### 3.2.9.9.3.2. find_in_batches
 
 1. The `find_in_batches` method is similar to `find_each`, since both retrieve batches of records. The difference is that `find_in_batches` yields batches to the block as an array of models, instead of individually.
 
@@ -1974,16 +1994,16 @@ end
 
    4. `:error_on_ignore` option overrides the application config to specify if an error should be raised when a specific order is present in the relation.
 
-##### 2.2.9.9.4. Query conditions
+##### 3.2.9.9.4. Query conditions
 
 - The `where` method allows you to specify conditions to limit the records returned, representing the `WHERE`-part of the SQL statement. Conditions can either be specified as a string, array, or hash.
 
-###### 2.2.9.9.4.1. Pure string conditions
+###### 3.2.9.9.4.1. Pure string conditions
 
 1. Conditions can be added to the find. E.g. `Book.where("title = 'Introduction to Algorithms'")`
 2. Building conditions with pure strings can leave it vulnerable to SQL injection exploits. For example, `Book.where("title LIKE '%#{params[:title]}%'")` is not safe.
 
-###### 2.2.9.9.4.2. Array conditions
+###### 3.2.9.9.4.2. Array conditions
 
 1. Active Record takes the first argument as the conditions string and any additional arguments will replace the question marks `(?)` in it.
 2. Putting the variable directly into the conditions string will pass the variable to the database **as-is**.
@@ -2020,7 +2040,7 @@ end
       Book.where("title LIKE ?",Book.sanitize_sql_like(params[:title]) + "%")
       ```
 
-###### 2.2.9.9.4.3. Hash conditions
+###### 3.2.9.9.4.3. Hash conditions
 
 1. Active Record also allows you to pass in hash conditions which can increase the readability of your conditions syntax.
 2. Only equality, range, and subset checking are possible with Hash conditions.
@@ -2169,7 +2189,7 @@ end
    SELECT * FROM customers WHERE (customers.id IN (1, 2) AND customers.id IN (2, 3))
    ```
 
-##### 2.2.9.9.5. Ordering
+##### 3.2.9.9.5. Ordering
 
 1. To retrieve records from the database in a specific order, the `order` method can be used.
 2. `ASC` and `DESC` can be specified.
@@ -2199,7 +2219,7 @@ end
    Book.order("title ASC", "created_at DESC")
    ```
 
-##### 2.2.9.9.6. Selecting specific fields
+##### 3.2.9.9.6. Selecting specific fields
 
 1. By default, `Model.find` selects all the fields from the result set using `select *`.
 2. However, by specifying columns to select, it means the objects are initialized with only the fields selected, so an error will be raised if it tries to access a field that is not selected.
@@ -2217,7 +2237,7 @@ end
    query.distinct(false)
    ```
 
-##### 2.2.9.9.7. Limit and offset
+##### 3.2.9.9.7. Limit and offset
 
 1. To apply `LIMIT` to the SQL fired by the `Model.find`,the `LIMIT` can be specified using `limit` and `offset` methods on the relation.
 
@@ -2225,7 +2245,7 @@ end
 Customer.limit(5).offset(30)
 ```
 
-##### 2.2.9.9.8. Grouping
+##### 3.2.9.9.8. Grouping
 
 1. `group` method can be used to apply `GROUP BY` SQL clause.
 2. In the following example, it gives a single `Order` object for each date where there are orders in the database.
@@ -2234,14 +2254,14 @@ Customer.limit(5).offset(30)
    Order.select("created_at").group("created_at")
    ```
 
-###### 2.2.9.9.8.1. Total grouped items
+###### 3.2.9.9.8.1. Total grouped items
 
 ```ruby
 Order.group(:status).count
 # => {"being_packed"=>7, "shipped"=>12}
 ```
 
-###### 2.2.9.9.8.2. HAVING conditions
+###### 3.2.9.9.8.2. HAVING conditions
 
 ```ruby
 # ruby
@@ -2264,7 +2284,7 @@ GROUP BY created_at
 HAVING sum(total) > 200
 ```
 
-##### 2.2.9.9.9. Scopes
+##### 3.2.9.9.9. Scopes
 
 1. commonly-used queries can be referenced as method calls on the association objects or models.
 
@@ -2286,7 +2306,7 @@ class Book < ApplicationRecord
 end
 ```
 
-#### 2.2.9.10. Pluck
+#### 3.2.9.10. Pluck
 
 1. [https://apidock.com/rails/ActiveRecord/Calculations/pluck](https://apidock.com/rails/ActiveRecord/Calculations/pluck)
 2. `Record.pluck` works as a shortcut to load only the selected attributes of the entity.
@@ -2321,7 +2341,7 @@ Person.pluck('DATEDIFF(updated_at, created_at)')
 # => ['0', '27761', '173']
 ```
 
-### 2.2.10. Active Model
+### 3.2.10. Active Model
 
 - [https://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/](https://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/)
 
@@ -2329,9 +2349,9 @@ Person.pluck('DATEDIFF(updated_at, created_at)')
 2. Active Model allows for Action Pack helpers to interact with plain Ruby objects.
 3. Active Model also helps build custom ORMs for use outside of the Rails framework.
 
-### 2.2.11. Meta programming
+### 3.2.11. Meta programming
 
-#### 2.2.11.1. Instance variable set
+#### 3.2.11.1. Instance variable set
 
 1. Imagine that you have a class constructor with too many arguments. You want to assign each argument to an instance variable of that class.
 2. Use the `Object#instance_variable_set` method provided by Ruby to initialize instance variables.
