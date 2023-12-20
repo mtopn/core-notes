@@ -19,6 +19,7 @@
     - [1.9.1. PSP feature flag](#191-psp-feature-flag)
   - [1.10. Elastic Search](#110-elastic-search)
     - [1.10.1. Import records to elasticsearch](#1101-import-records-to-elasticsearch)
+    - [1.10.2. CanIndex model concern](#1102-canindex-model-concern)
   - [1.11. Controllers](#111-controllers)
   - [1.12. Tips for development (local)](#112-tips-for-development-local)
   - [1.13. Unit test, integration test, and specs](#113-unit-test-integration-test-and-specs)
@@ -302,6 +303,24 @@ end
 ```shell
 # re-index and import records for team
 bin/bundle exec rake environment elasticsearch:import:teams
+# re-index for admin dashboard
+bin/bundle exec rake environment admin:elasticsearch:import:teams
+```
+
+### 1.10.2. CanIndex model concern
+
+1. Some models having indexer can be re-indexed when new records are created on elasticsearch.
+2. In MMS project, `SubMerchant` is sharing the same table with `Team` which has the only difference that `SubMerchant` must have a `parent_id`, while `Team` doesn't.
+3. However, to avoid efforts on building a new indexer, we can allow `SubMerchant` use the same indexer with `Team`.
+4. However, it fails into the case that these 2 models are different classes.
+5. In `rails`, we can use [`becomes`](https://apidock.com/rails/ActiveRecord/Base/becomes), which is especially useful in this scenario.
+6. In `index_data` method in `CanIndex` concern, the method calls certain indexer according to its class name as a pattern.
+
+```ruby
+# models/concerns/can_index.rb
+def index_data
+  Indexer.process("index", id, self.class.to_s) if persisted?
+end
 ```
 
 ## 1.11. Controllers
