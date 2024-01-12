@@ -25,6 +25,7 @@
   - [1.13. Unit test, integration test, and specs](#113-unit-test-integration-test-and-specs)
   - [1.14. Deployment](#114-deployment)
     - [1.14.1. Staging](#1141-staging)
+  - [1.15. SSH staging server](#115-ssh-staging-server)
 - [2. MMS (PAYFAC)](#2-mms-payfac)
   - [2.1. Prerequisite](#21-prerequisite)
   - [2.2. Confluence](#22-confluence)
@@ -398,6 +399,101 @@ end
 
 <img src="./imgs/buildkite_new_build.png">
 <img src="./imgs/buildkite_process_list.png">
+
+## 1.15. SSH staging server
+
+1. [Instructions](https://opn-ooo.atlassian.net/wiki/spaces/D/pages/576756080/TLDR+Access+Pods+in+Kubernetes)
+2. `piggy` is a credential management service which is required for cases that secrets are required to be loaded in the context.
+3. When connecting to k8s, it can specify the `pod` ID to connect or connect directly to the service `svc` which k8s will randomly choose a `pod` to connect to.
+4. Setup aws secret from One Password AWS vault and login SSO through browser client.
+5. Setup aws settings
+
+   ```
+   # get sso_account_id from confluence
+   # ~/.aws/config
+   [profile omise-experimental]
+   sso_start_url = https://omise.awsapps.com/start
+   sso_region = ap-southeast-1
+   sso_account_id = 000000000000
+   sso_role_name = PowerUserWithIAMFullAccess
+   region = ap-southeast-1
+
+   [default]
+   region = ap-southeast-1
+   sso_start_url = https://omise.awsapps.com/start
+   sso_region = ap-southeast-1
+   sso_role_name = Developers
+
+   [profile omise-pci-staging]
+   sso_account_id = 000000000000
+   [profile omise-production]
+   sso_account_id = 000000000000
+   sso_role_name = firefighter
+
+   [profile omise-infra]
+   sso_account_id = 000000000000
+
+   [profile omise-staging]
+   sso_account_id = 000000000000
+
+   [profile omise-logging]
+   sso_account_id = 000000000000
+
+   [profile omise-dns]
+   sso_account_id = 000000000000
+
+   [profile omise-bi]
+   sso_account_id = 000000000000
+   ```
+
+6. Setup kubernetes settings
+
+   1. replace `000000000000` with actual ID.
+   2. replace `server_id` in cluster for http endpoint with actual ID.
+   3. ensure `certificate-authority-data` is generated in the setup flow.
+
+   ```yaml
+   # ~/.kube/config
+   # replace 000000000000 with actual id
+   # replace server_id in clusters: cluster: server:
+   # ensure certificate-authority-data is updated
+   apiVersion: v1
+   clusters:
+     - cluster:
+         certificate-authority-data: some_encrypted_hash
+         server: https://server_id.sk1.ap-southeast-1.eks.amazonaws.com
+       name: arn:aws:eks:ap-southeast-1:000000000000:cluster/k8s-staging-core
+   contexts:
+     - context:
+         cluster: arn:aws:eks:ap-southeast-1:000000000000:cluster/k8s-staging-core
+         user: arn:aws:eks:ap-southeast-1:000000000000:cluster/k8s-staging-core
+       name: k8s-staging-core
+   current-context: k8s-staging-core
+   kind: Config
+   preferences: {}
+   users:
+     - name: arn:aws:eks:ap-southeast-1:000000000000:cluster/k8s-staging-core
+       user:
+         exec:
+           apiVersion: client.authentication.k8s.io/v1beta1
+           args:
+             - exec
+             - omise-staging
+             - --
+             - aws
+             - --region
+             - ap-southeast-1
+             - eks
+             - get-token
+             - --cluster-name
+             - k8s-staging-core
+             - --role-arn
+             - arn:aws:iam::000000000000:role/Developers
+           command: aws-vault
+           env: null
+           interactiveMode: IfAvailable
+           provideClusterInfo: false
+   ```
 
 # 2. MMS (PAYFAC)
 
