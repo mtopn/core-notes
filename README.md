@@ -308,6 +308,18 @@ bin/bundle exec rake environment elasticsearch:import:teams
 bin/bundle exec rake environment admin:elasticsearch:import:teams
 ```
 
+5. In case that rake tasks cannot proceed, we can configure `config/initializers/payment_adapter.rb` and add several bulk rake tasks to `allowed_tasks`
+
+```rb
+# config/initializers/payment_adapter.rb
+allowed_tasks: %w[
+  # ...other tasks
+  admin:elasticsearch:import:bulk
+  elasticsearch:import:bulk
+  elasticsearch:setup:indices
+]
+```
+
 ### 1.10.2. CanIndex model concern
 
 1. Some models having indexer can be re-indexed when new records are created on elasticsearch.
