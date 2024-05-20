@@ -308,11 +308,11 @@ bin/bundle exec rake environment elasticsearch:import:teams
 bin/bundle exec rake environment admin:elasticsearch:import:teams
 ```
 
-5. In case that rake tasks cannot proceed, we can configure `config/initializers/payment_adapter.rb` and add several bulk rake tasks to `allowed_tasks`
+5. In case rake tasks cannot proceed by having an error such as not found Cybersource payment adapter, we can configure `config/initializers/payment_adapter.rb` and add several bulk rake tasks to `allowed_tasks`
 
 ```rb
 # config/initializers/payment_adapter.rb
-allowed_tasks: %w[
+allowed_tasks = %w[
   # ...other tasks
   admin:elasticsearch:import:bulk
   elasticsearch:import:bulk
